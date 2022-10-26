@@ -3,7 +3,7 @@ import ContactList from './contactList';
 import Filter from './filter';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFilterValue, getContactsValue } from 'redux/selectors/selectors';
-import { filterContacts } from '../redux/slices/sliceFilter';
+import { filterContacts } from 'redux/slices/sliceFilter';
 
 export default function App() {
   const dispatch = useDispatch();

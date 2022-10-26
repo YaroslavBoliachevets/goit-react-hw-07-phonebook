@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormInput, Label, Input } from './ContactForm .styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { add } from '../../redux/slices/sliceContacts';
+import { add } from 'redux/slices/sliceContacts';
 import { getContactsValue } from 'redux/selectors/selectors';
 
 function ContactForm({ onSubmit }) {
