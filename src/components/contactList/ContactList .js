@@ -1,10 +1,16 @@
 import PropTypes from 'prop-types';
 import { DeleteButton } from './ContactList .module';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { remove } from 'redux/slices/sliceContacts';
+import { getFilterValue, getContactsValue } from 'redux/selectors/selectors';
 
-function ContactList({ contacts }) {
+function ContactList() {
   const dispatch = useDispatch();
+  const filter = useSelector(getFilterValue);
+  const allContacts = useSelector(getContactsValue);
+  const contacts = allContacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
     <>
