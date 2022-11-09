@@ -1,13 +1,13 @@
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { FormInput, Label, Input } from './ContactForm .styled';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector,  } from 'react-redux';
 import { useState } from 'react';
-import { add } from 'redux/slices/sliceContacts';
+// import { add } from 'redux/slices/sliceContacts';
 import { getContactsValue } from 'redux/selectors/selectors';
 
 function ContactForm({ onSubmit }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const contacts = useSelector(getContactsValue);
 
   const [inputName, setName] = useState('');
@@ -77,7 +77,7 @@ function ContactForm({ onSubmit }) {
         type="submit"
         onClick={() => {
           if (isNewContact(inputName, inputNumber)) {
-            dispatch(add(makeContact(inputName, inputNumber)));
+            // dispatch(add(makeContact(inputName, inputNumber)));
           }
         }}
       >
