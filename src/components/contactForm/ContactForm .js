@@ -1,13 +1,13 @@
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { FormInput, Label, Input } from './ContactForm .styled';
-import { useSelector,  } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
-// import { add } from 'redux/slices/sliceContacts';
 import { getContactsValue } from 'redux/selectors/selectors';
+import { addContact } from '../../../src/redux/operations/operations';
 
 function ContactForm({ onSubmit }) {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const contacts = useSelector(getContactsValue);
 
   const [inputName, setName] = useState('');
@@ -29,20 +29,25 @@ function ContactForm({ onSubmit }) {
 
   const onFormSubmit = e => {
     e.preventDefault();
-    makeContact(inputName, inputNumber);
-    reset();
+
+    if (isNewContact(inputName, inputNumber)) {
+      const newContact = makeContact(inputName, inputNumber);
+      dispatch(addContact(newContact));
+      reset();
+    };
+
   };
 
   const makeContact = (name, number) => {
-    return { name, number, id: nanoid() };
+      return { name, number, };
   };
 
   const isNewContact = (name, number) => {
-    if (contacts.find(contact => contact.name.includes(name))) {
+    if (contacts.items.find(contact => contact.name.includes(name))) {
       alert(`${name} is already in contacts.`);
       return false;
     }
-    if (contacts.find(contact => contact.number.includes(number))) {
+    if (contacts.items.find(contact => contact.number.includes(number))) {
       alert(`${number} is already in contacts.`);
       return false;
     }
@@ -73,16 +78,7 @@ function ContactForm({ onSubmit }) {
         onChange={handleInputChange}
         id={telInputId}
       />
-      <button
-        type="submit"
-        onClick={() => {
-          if (isNewContact(inputName, inputNumber)) {
-            // dispatch(add(makeContact(inputName, inputNumber)));
-          }
-        }}
-      >
-        Add to contact
-      </button>
+      <button type="submit">Add to contact</button>
     </FormInput>
   );
 }

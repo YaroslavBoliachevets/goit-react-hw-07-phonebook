@@ -3,19 +3,25 @@ import { DeleteButton } from './ContactList .module';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 // import { remove } from 'redux/slices/sliceContacts';
-import { getFilterValue, getContactsValue, getState } from 'redux/selectors/selectors';
-import {fetchContacts} from "../../../src/redux/operations/operations";
+import { getFilterValue, getStateContacts } from 'redux/selectors/selectors';
+import { fetchContacts, deleteContact } from '../../../src/redux/operations/operations';
 
 function ContactList() {
   const dispatch = useDispatch();
-  const state = useSelector(getState);
+
   const filter = useSelector(getFilterValue);
-  const allContacts = useSelector(getContactsValue);
-  const contacts = allContacts.items.filter(contact =>
+  const allContacts = useSelector(getStateContacts);
+  const { items, isLoading, error } = allContacts;
+
+  const contacts = items.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  useEffect(()=> {
+  const handleDelete = (id) => {
+    dispatch(deleteContact(id));
+  }
+
+  useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
@@ -26,6 +32,8 @@ function ContactList() {
 
   return (
     <>
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Error =/</p>}
       <ul>
         {contacts &&
           contacts.map(contact => {
@@ -34,7 +42,7 @@ function ContactList() {
                 {contact.name}: {contact.number}
                 <DeleteButton
                   type="button"
-                  // onClick={() => dispatch(remove(contact.id))}
+                  onClick={() => handleDelete(contact.id)}
                 >
                   delete
                 </DeleteButton>
@@ -51,5 +59,5 @@ export default ContactList;
 ContactList.propTypes = {
   contacts: PropTypes.array,
   onDeleteContact: PropTypes.func,
-  fetchContacts: func, 
+  fetchContacts: func,
 };
